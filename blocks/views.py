@@ -29,21 +29,37 @@ def getPosts(request):
     kmap["posts"] = posts
     return render(request,"posts.html",kmap)    
 
-# 表单没有保存成功呀
+# 为啥会重复保存之前post的表单内容？是之前的缓存吗？
 @login_required
 def addPost(request):
+    print("addPost")
     if request.method == "POST":
+        print(request.POST)
+        # 多加一层 PostForm 是为了实现验证功能吗？
         form = PostForm(data = request.POST)
+
         if form.is_valid():
             title = form.cleaned_data["title"]
             content = form.cleaned_data["content"]
-            # 所属的板块怎么获取，怎么设置？
+            # 所属的板块怎么获取，怎么设置？在前端用 select下拉框。注意名字对应。
+            block_id = form.cleaned_data["block"]
+            block = Block.objects.get(id = block_id)
             post = Post(author = request.user,title = title, content = content, block = block)
             post.save()
             print("++++++++++valid & saved post++++++")
         print("error info （if any）", form.errors)
     kmap = {}
     posts = Post.objects.all()
-    kmap["posts"] = posts    
+    blocks = Block.objects.all()
+    # print("blocks", blocks)
+    kmap["posts"] = posts 
+    kmap["blocks"] = blocks   
     print("666")   
     return render(request,"posts.html",kmap)    
+
+# 前端写一个表格，需要js： https://blog.csdn.net/wangjingna/article/details/51166499
+# https://examples.bootstrap-table.com/ 
+# https://mdbootstrap.com/docs/standard/plugins/table-editor/
+@login_required
+def editPost(request):
+    return

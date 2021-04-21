@@ -1,32 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="/static/css/editTable.css" /> -->
+    <!-- <script src="/static/css/editTable.js"></script>
+    <script src="extensions/editable/bootstrap-table-editable.js"></script> -->
+
+    <!--表格编辑， 导入 bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
     <title>Document</title>
 </head>
 <body>
-    输入帖子标题： <input name="title">
-    输入帖子内容： <textarea type="text" class="form-control" name="content" placeholder="帖子内容"></textarea>
-    block：<select name="block">
-        <!-- 要么前端表单传id，要么url传id（前端就不用传了） -->
-         {% for b in block %} 
-        <!-- models默认都会有个id属性，是自增的.是django框架默认帮你处理的 --> 
-        <!-- issue和issue.id 是不一样的哦， i 就是 标题-->
-        <option >{{b}}</option>
-        <option value="{{b}}">{{b.title}}</option>
-         {% endfor %} 
-    </select>
-    <button type="submit" class="btn btn-default">提交</button>
-    <br><br>
+   
 
-    {% for post in posts %}
-    帖子标题: {{post.title}}
-    帖子内容: {{post.content}}
-    <br>
-    {% endfor %}
+    <div class="card">
+            <h2 class="card-header"> 鹿鹿的瓜棚</h2>
+        <!-- 给新增/编辑/删除帖子功能加上js ， 实现弹窗。 可以用 bootstrap 里的modal-->
+        <!-- 
+        输入帖子标题： <input name="title">
+        输入帖子内容： <textarea type="text" class="form-control" name="content" placeholder="帖子内容"></textarea>
+        -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPost" data-whatever="@mdo">新增帖子</button>
+        <div class="modal fade" id="addPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">贴贴</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 别忘了这个 method="post" -->
+                <form action="/addPost/" method="post">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label" >输入帖子标题</label>
+                    <!-- 这里才是form中填写 title 的地方，所以name = “title” 要定义在这里，别写到上面去啦！！！ -->
+                    <input type="text" class="form-control" id="recipient-name" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="col-form-label" >输入帖子内容</label>
+                      <!-- 这里才是form中填写 content 的地方，所以name = “content” 要定义在这里，别写到上面去啦！！！ -->
+                    <textarea class="form-control" id="message-text" name="content"></textarea>
+                </div>
+                block：
+                <!-- {{ blocks }} -->
+                <select name="block">
+                    <!-- 要么前端表单传id，要么url传id（前端就不用传了） -->
+                    {% for block in blocks %} 
+                     <!-- models默认都会有个id属性，是自增的.是django框架默认帮你处理的 --> 
+                    <!-- issue和issue.id 是不一样的哦， i 就是 标题--> 
+                    <!-- <option >block {{block}}</option> -->
+                    <option value={{block.id}}>{{block.title}}</option>        
+                    {% endfor %}   
+                </select> 
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+                {%csrf_token%}
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+             </form>
+            </div>
+        </div>
+        </div>
+            
 
+        
+        <br>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">帖子标题</th>
+                        <th scope="col">帖子内容</th>
+                        <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                        <th scope="row">{{post.id}}</th>
+                        <td>{{post.title}}</td>
+                        <td>{{post.content}}</td>
+                        <td>
+                            <button type = "button" class = "btn btn-warning"> 编辑</button>
+                            <button type = "button" class = "btn btn-danger"> 删除</button>
+                        </td>
+                        </tr> 
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </table>
+            </div>
+    </div>
 
    
 

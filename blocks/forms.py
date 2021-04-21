@@ -9,7 +9,7 @@ class BlockForm(forms.Form):
 class PostForm(forms.Form):
     title = forms.CharField(max_length=100)
     content = forms.CharField(min_length=1)
-    block = forms.CharField(max_length=100)
+    block = forms.IntegerField()
        
 class CommentForm(forms.Form):
     content = forms.CharField(min_length=1)
