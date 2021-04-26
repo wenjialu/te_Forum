@@ -31,6 +31,16 @@ class Comment(models.Model):
     content = models.TextField(default="") 
     create_time = models.DateTimeField(null=True, blank=True, default=datetime.datetime.now)
     reply = models.ForeignKey(to=Post,null=True,related_name="comments", on_delete=models.CASCADE)
-    #  __str__ 设置展示在admin后台的是什么。
+    #  __str__ 设置展示在admin后台的是什么。__str__()
+    # 一个 Python 的“魔法方法”，返回值友好地展示了一个对象。Python 和 Django 在要将模型实例展示为纯文本时调用。最有可能的应用场景是交互式控制台或后台
     def __str__(self):
         return self.author.username + self.content[:13]
+
+
+class Likes(models.Model):
+    # author = models.ForeignKey(to=User,related_name="likes", on_delete=models.CASCADE) 
+    post = models.ForeignKey(to=Post,related_name="likes", on_delete=models.CASCADE) 
+    like_num = models.IntegerField(default=0) 
+    is_like = models.BooleanField(default = False) 
+    # create_time = models.DateTimeField(null=True, blank=True, default=datetime.datetime.now)
+   

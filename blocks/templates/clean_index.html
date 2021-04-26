@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<header>
+	<h1>微博</h1>
+</header>
+111
+<hr />
+{% if user.is_authenticated %}
+222
+<content>
+	<h1>
+		<!-- <span><a href='{% url "user_account:homepage" %}'>我的主页</a></span>
+		<span><a href='{% url "user_account:logout" %}'>退出登录</a></span> -->
+
+	</h1>
+</content>
+{% else %}
+333
+<content>
+
+	{% if status == "register" %}
+	<h3>注册</h3>
+
+    <form method='POST' action='/register/' >    
+		{% csrf_token %}
+		<p>
+			<label>用户名：</label>
+			<input name='username' placeholder='用户名'>
+		</p>
+		<p>
+			<label>邮箱：</label>
+			<input name='email' type='email' placeholder='邮箱'>
+		</p>
+		<p>
+			<label>密码：</label>
+			<input name='password1' type='password' placeholder='密码'>
+			{% if form.errors %}
+			{{form.helptext}}
+			{% endif %}
+		</p>
+		<p>
+			<label>密码确认：</label>
+			<input name='password2' type='password' placeholder='请再输一次'>
+		</p>
+		<input type='submit' value='提交'>
+	</form>
+
+
+		<p>
+		{% if form.errors %}
+		<!-- 0000
+		{{form}}
+		0000 -->
+    	{% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">            
+			    <!-- 打印出出错的field。 -->
+				{{ field.label_tag }} {{ field }}
+
+				<strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    	{% endfor %}
+		{% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    	{% endfor %}
+		{% endif %}
+	</p> 
+
+
+
+	<hr />
+
+	{% elif status == "login" %}
+	<h3>登录</h3>
+	<form method='POST' action='/login/'>
+		{% csrf_token %}
+		<p>
+			<label>用户名：</label>
+			<input name='username' placeholder='用户名'>
+		</p>
+		<p>
+			<label>密码：</label>
+			<input name='password' type='password' placeholder='密码'>
+		</p>
+		<input type='submit' value='提交'>
+	</form>
+
+	<p>
+		{% if form.errors %}
+		<!-- 0000
+		{{form}}
+		0000 -->
+    	{% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">            
+			    <!-- 打印出出错的field。 -->
+				{{ field.label_tag }} {{ field }}
+
+				<strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    	{% endfor %}
+		{% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    	{% endfor %}
+		{% endif %}
+	</p>
+
+
+	{% endif %}
+</content>
+{% endif %}
+<hr />
+<footer>
+	<p>欢迎访问</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!-- {% extends 'base.html' %} -->
+{% block title %}首页{% endblock %}
+{% block base_header %}
+	<h1 class='text-center'>简易微博</h1>
+{% endblock %}
+{% block base_header_to_content %}<hr />{% endblock %}
+{% block base_content %}
+{% if user.is_authenticated %}
+<h2>
+	<span><a href='{% url "wb:homepage" %}'>个人中心</a></span>
+	<span><a href='{% url "wb:upage" %}?uid={{ user.id }}'>我的主页</a></span>
+	<span><a href='{% url "account:logout" %}'>退出登录</a></span>
+</h2>
+<hr />
+<table class="table table-hover table-striped table-bordered">
+	<caption>
+		<h3 class='text-center'>新新博主</h3>
+	</caption>
+	<thead class='thead-inverse'>
+		<tr>
+			<th>昵称</th>
+			<th>性别</th>
+			<th>加入时间</th>
+		</tr>
+	</thead>	
+	<tbody>
+	{% for wb_user in users %}
+		<tr>
+			<td><a href='{% url "wb:upage" %}?uid={{ wb_user.id }}'>{{ wb_user.name }}</td>
+			<td>{{ wb_user.get_gender_display }}</td>
+			<td>{{ wb_user.date_joined }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<h3 class='text-center'>注册</h3>
+<form class="form-horizontal" method='POST' action='{% url "account:register" %}'>
+	{% csrf_token %}
+	<div class="form-group">
+		<label class='col-md-1 text-right' for='input_username'>用户名：</label>
+		<div class='col-md-10'>
+			<input class='form-control' id='input_username' name='username' placeholder='用户名'>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class='col-md-1 text-right' for='input_email'>邮箱：</label>
+		<div class='col-md-10'>
+			<input class='form-control' id='input_email' name='email' type='email' placeholder='邮箱'>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class='col-md-1 text-right' for='input_password'>密码：</label>
+		<div class='col-md-10'>
+			<input class='form-control' id='input_password' name='password' type='password' placeholder='密码'>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class='col-md-1 text-right' for='input_password2'>密码确认：</label>
+		<div class='col-md-10'>
+			<input class='form-control' id='input_password2' name='password2' type='password' placeholder='请再输一次'>
+		</div>
+	</div>
+	<input class="btn btn-default" type='submit' value='提交'>
+</form>
+<hr />
+<h3 class='text-center'>登录</h3>
+<form class='form-horizontal' method='POST' action='{% url "account:login" %}'>
+	{% csrf_token %}
+	<div class="form-group">
+		<label class='col-md-1 text-right' for='input_username'>用户名：</label>
+		<div class='col-md-10'>
+			<input class='form-control' id='input_username' name='username' placeholder='用户名'>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class='col-md-1 text-right' for='input_password'>密码：</label>
+		<div class='col-md-10'>
+			<input class='form-control' id='input_password' name='password' type='password' placeholder='密码'>
+		</div>
+	</div>
+	<input class="btn btn-default" type='submit' value='提交'>
+</form>
+{% endif %}
+{% endblock %}
+{% block base_content_to_footer %}<hr />{% endblock %}

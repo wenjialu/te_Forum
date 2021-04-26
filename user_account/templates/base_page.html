@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block base_header %}
+<p class='pull-right'>
+	<span><a href='{% url "index" %}'>首页</a></span>
+	<span>|</span>
+	<span><a href='{% url "account:logout" %}'>退出登录</a></span>
+</p>
+	{% block header %}
+	<h4 class='text-center'>crossin的编程教室·简易微博</h4>
+	{% endblock %}
+{% endblock %}
+
+{% block base_header_to_content %}<hr />{% endblock %}
+
+{% block base_content %}
+<div class='col-md-2'>
+	{% block left %}
+	<div class="list-group">
+		<a href="{% url 'index' %}" class="list-group-item text-center">首页</a>
+		<a href="{% url 'wb:homepage' %}" class="list-group-item text-center">个人中心</a>
+		<a href="{% url 'wb:upage' %}?uid={{ user.id }}" class="list-group-item text-center">我的主页</a>
+	</div>
+	{% block left_more %}{% endblock %}
+	{% endblock %}
+</div>
+<div class='col-md-10'>
+	{% block right %}
+	<input class='form-control'>
+	{% endblock %}
+</div>
+{% endblock %}
+
+{% block base_content_to_footer %}<hr />{% endblock %}
+{% block base_more %}
+	{% block modal %}{% endblock %}
+{% endblock %}
+{% block base_script %}
+	{% block script %}{% endblock %}
+{% endblock %}

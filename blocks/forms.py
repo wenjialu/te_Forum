@@ -7,6 +7,7 @@ class BlockForm(forms.Form):
 
 # 外键和时间不用设定.设置一下除此之外的属性。  
 class PostForm(forms.Form):
+    # id = forms.IntegerField()
     title = forms.CharField(max_length=100)
     content = forms.CharField(min_length=1)
     block = forms.IntegerField()
