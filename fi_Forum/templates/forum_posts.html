@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>帖子列表页面</title>
+		<link rel="stylesheet" href="/static/css/bootstrap.css" />
+	</head>
+
+	<body>
+		<div class="container" style="margin-bottom: 20px;">
+			<h2>{{plate.title}}——帖子列表</h2>
+
+			<div class="col-md-8" style="padding:0px;">
+				<div class="panel panel-warning">
+					<div class="panel-heading">
+						<h3 class="panel-title">提示信息</h3>
+					</div>
+					<div class="panel-body">
+						当前板块的帖子数：{{plate.posts.count}}
+					</div>
+				</div>
+				{% if messages %}
+					{% for message in messages %}
+				<div class="alert {%if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+
+				<hr/>
+				{% for post in plate.posts.all %}
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<a href="/reply/{{post.id}}/">{{post.title}}</a>
+					</div>
+				</div>
+				{% endfor %}
+
+				<hr />
+				<form action="/block/{{plate.id}}/post/" method="post">
+					<h3>新建帖子</h3>
+					<div class="form-group">
+						<label for="exampleInputTitle">帖子标题：</label>
+						<input name="title" type="text" class="form-control" id="exampleInputTitle" placeholder="Title">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">帖子内容：</label>
+						<textarea name="content" class="form-control" rows="3"></textarea>
+					</div>
+					{% csrf_token %}
+					<button type="submit" class="btn btn-default">提交</button>
+				</form>
+			</div>
+			<div class="col-md-4" style="padding-right:0px;">
+				<h4>推荐</h4>
+
+				<div class="list-group">
+					<a href="#" class="list-group-item active" style="background-color: #b30e2c;border-color: #b30e2c;">
+						最热
+					</a>
+					<a href="#" class="list-group-item">Python基础</a>
+					<a href="#" class="list-group-item">Python函数</a>
+					<a href="#" class="list-group-item">Python类名</a>
+					<a href="#" class="list-group-item">多线程</a>
+				</div>
+
+				<div class="list-group">
+					<a href="#" class="list-group-item active">
+						最新
+					</a>
+					<a href="#" class="list-group-item">Python基础</a>
+					<a href="#" class="list-group-item">Python函数</a>
+					<a href="#" class="list-group-item">Python类名</a>
+					<a href="#" class="list-group-item">多线程</a>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

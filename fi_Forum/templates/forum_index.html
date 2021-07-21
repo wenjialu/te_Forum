@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>论坛首页</title>
+		<link rel="stylesheet" href="/static/css/bootstrap.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>论坛页面——板块</h1>
+			<dov class="col-md-8" style="padding: 0px;">
+				
+				<div class="list-group">
+					<a href="#" class="list-group-item active">
+						板块
+					</a>
+					{% for p in plates %}
+					<a href="/block/{{p.id}}" class="list-group-item">{{p.title}}</a>
+					{% endfor %}
+
+				</div>
+			</dov>
+			<dov class="col-md-4" style="padding-right: 0px;">
+				<h4>推荐</h4>
+				
+				<div class="list-group">
+					<a href="#" class="list-group-item active" style="background-color: #b30e2c;border-color: #b30e2c;">
+						最热
+					</a>
+					<a href="#" class="list-group-item">Python基础</a>
+					<a href="#" class="list-group-item">网络编程</a>
+					<a href="#" class="list-group-item">爬虫</a>
+					<a href="#" class="list-group-item">Web</a>
+				</div>
+				
+				<div class="list-group">
+					<a href="#" class="list-group-item active">
+						最新
+					</a>
+					<a href="#" class="list-group-item">Python基础</a>
+					<a href="#" class="list-group-item">网络编程</a>
+					<a href="#" class="list-group-item">爬虫</a>
+					<a href="#" class="list-group-item">Web</a>
+				</div>
+			</dov>
+		</div>
+	</body>
+</html>
